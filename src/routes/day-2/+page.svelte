@@ -1,3 +1,8 @@
+<script lang="ts">
+	import { cookieCount } from '$lib/day-2/cookie-count';
+	import { fade } from 'svelte/transition';
+</script>
+
 <h1>Day 2</h1>
 <h2>Problem</h2>
 <p>
@@ -12,3 +17,19 @@
 </p>
 
 <h2>Solution</h2>
+<button on:click={cookieCount.increment}>+</button>
+<button on:click={cookieCount.decrement}>-</button>
+<button on:click={cookieCount.reset}>reset</button>
+<p>Cookies: {$cookieCount.length}</p>
+<div class="flex">
+	{#each $cookieCount as cookie}
+		<p transition:fade>{cookie}</p>
+	{/each}
+</div>
+
+<style>
+	.flex {
+		display: flex;
+		gap: 1rem;
+	}
+</style>
