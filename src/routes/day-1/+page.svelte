@@ -64,6 +64,14 @@
 	</section>
 </div>
 
+<h2>Todo</h2>
+<ul>
+	<li>Add good/bad incrementor to each</li>
+	<li>Animate</li>
+	<li>Input number of good deeds and number of bad, and calc if good bad</li>
+	<li>Styling</li>
+</ul>
+
 <style>
 	.lists {
 		display: flex;
