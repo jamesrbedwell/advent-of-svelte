@@ -1,5 +1,17 @@
-<script>
+<script lang="ts">
+	import Table from '$lib/day-1/Table.svelte';
+	import { type ChildList } from '$lib/day-1/child-list';
 	export let data;
+
+	const { list } = data;
+	const { good, bad } = list.reduce(
+		(prev, cur) => {
+			const { good, bad } = prev;
+			if (cur.tally > 0) return { good: [...good, cur], bad };
+			return { good, bad: [...bad, cur] };
+		},
+		{ good: [] as ChildList, bad: [] as ChildList }
+	);
 </script>
 
 <h1>Day 1</h1>
@@ -35,4 +47,26 @@
 </p>
 
 <h2>Solution</h2>
-<pre>{JSON.stringify(data.list, null, 2)}</pre>
+<form method="POST">
+	<label for="name">Name</label>
+	<input id="name" name="name" type="text" autocomplete="off" required />
+	<label for="tally">Tally</label>
+	<input id="tally" name="tally" type="number" required />
+</form>
+<div class="lists">
+	<section>
+		<h3>Good</h3>
+		<Table list={good} />
+	</section>
+	<section>
+		<h3>Bad</h3>
+		<Table list={bad} />
+	</section>
+</div>
+
+<style>
+	.lists {
+		display: flex;
+		gap: 2rem;
+	}
+</style>
