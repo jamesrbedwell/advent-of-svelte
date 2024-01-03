@@ -3,7 +3,7 @@
 	import { fade } from 'svelte/transition';
 </script>
 
-<h1>Day 2</h1>
+<h1>Day 2 - Merry Munch-o-Meter</h1>
 <h2>Problem</h2>
 <p>
 	As the clock ticks down to Christmas Eve, Santa is preparing to eat all the cookies left by

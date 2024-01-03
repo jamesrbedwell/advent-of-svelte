@@ -14,7 +14,7 @@
 	);
 </script>
 
-<h1>Day 1</h1>
+<h1>Day 1 - Naughty or Nice</h1>
 <h2>Problem</h2>
 <p>
 	The Elves have been tirelessly creating presents all year round. They’re right on schedule, but
