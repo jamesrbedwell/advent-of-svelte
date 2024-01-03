@@ -1,3 +1,38 @@
+<script lang="ts">
+	import { trips, type Parcel, balanceLoad, parcels } from '$lib/day-3/package-list.js';
+
+	export let data;
+	let { parcelList } = data;
+	parcels.set(parcelList);
+
+	function addTrip() {
+		trips.update((t) => [...t, { parcels: [], totalWeight: 0 }]);
+	}
+
+	function addParcelToTrip(
+		event: { currentTarget: EventTarget & HTMLFormElement },
+		parcel: Parcel
+	) {
+		const formData = new FormData(event.currentTarget);
+
+		const tripIndex = Number(formData.get(`parcel-${parcel.id}`)?.toString());
+
+		parcels.update((pc) => {
+			const toAdd = pc.find((p) => p.id === parcel.id);
+			if (toAdd) {
+				toAdd.isAdded = true;
+			}
+			return pc;
+		});
+		trips.update((t) => {
+			const trip = t[tripIndex];
+			trip.parcels.push(parcel);
+			trip.totalWeight += parcel.weight;
+			return t;
+		});
+	}
+</script>
+
 <h1>Day 3 - Jingle Bell Balancer</h1>
 <h2>Problem</h2>
 <p>
@@ -28,3 +63,46 @@
 </p>
 
 <h2>Solution</h2>
+<h3>Trips</h3>
+<button on:click={() => balanceLoad($parcels)}>Auto Sort</button>
+<button on:click={addTrip}>Add trip</button>
+<div class="trips">
+	{#each $trips as trip, i}
+		<article>
+			<h4>Trip {i + 1} (weight: {trip.totalWeight})</h4>
+			{#each trip.parcels as parcel}
+				<p>{parcel.name}</p>
+			{/each}
+		</article>
+	{/each}
+</div>
+<table>
+	<thead>
+		<tr><td><b>Name</b></td><td><b>Weight</b></td><td /></tr>
+	</thead>
+	<tbody>
+		{#each $parcels.filter((p) => !p.isAdded) as parcel (parcel.id)}
+			<tr
+				><td>{parcel.name}</td><td>{parcel.weight}</td><td>
+					<form on:submit|preventDefault={(e) => addParcelToTrip(e, parcel)}>
+						<select name={`parcel-${parcel.id}`} id={`select-${parcel.id}`}>
+							<option>Select a trip</option>
+							{#each $trips as trip, i}
+								<option value={i} disabled={trip.totalWeight + parcel.weight > 100}
+									>Trip {i + 1}</option
+								>
+							{/each}</select
+						><button>add</button>
+					</form></td
+				></tr
+			>
+		{/each}
+	</tbody>
+</table>
+
+<style>
+	.trips {
+		display: flex;
+		gap: 1rem;
+	}
+</style>
